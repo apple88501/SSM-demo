@@ -1,0 +1,11 @@
+org\poop\config\ServletContainerInitConfig.class
+org\poop\config\SpringMVCSupport.class
+org\poop\pojo\Book.class
+org\poop\service\impl\BookService.class
+org\poop\dao\BookDao.class
+org\poop\service\Service.class
+org\poop\config\JdbcConfig.class
+org\poop\config\SpringConfig.class
+org\poop\config\MybatisConfig.class
+org\poop\config\SpringMVCConfig.class
+org\poop\controller\BookController.class

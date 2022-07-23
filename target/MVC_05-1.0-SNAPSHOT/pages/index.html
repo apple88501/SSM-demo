@@ -1,0 +1,118 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book list</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+<script>
+    $(function(){
+        $("#create").click(function () {
+            window.location.replace("/pages/create.html");
+        })
+        var getUrlString = location.href;
+        var url = new URL(getUrlString);
+        let name = url.searchParams.get('name');
+        if(name!=undefined && name!=""){
+            $.ajax({
+                url: '/book/search/'+name,
+                type: 'GET',
+                async:false,
+                success: function(item) {
+                    var bookList = JSON.parse(item);
+                    bookList.forEach(function (book) {
+                        let str = "";
+                        str += "<tr id='"+book.id+"'>";
+                        str += "<td>"+book.type+"</td>";
+                        str += "<td>"+book.name+"</td>";
+                        str += "<td>"+book.description+"</td>";
+                        str += "<td style='text-align: center;'>";
+                        str += "<button type='button' class='modify btn btn-primary' value='"+book.id+"'>修改</button> ";
+                        str += "<button type='button' class='delete btn btn-danger' bookname='"+book.name+"' value='"+book.id+"'>刪除</button>";
+                        str += "</td>";
+                        str += "</tr>";
+                        $("#list tbody").append(str);
+                    })
+                }
+            });
+        }else{
+            $.ajax({
+                url: '/book/',
+                type: 'GET',
+                async:false,
+                success: function(item) {
+                    var bookList = JSON.parse(item);
+                    bookList.forEach(function (book) {
+                        let str = "";
+                        str += "<tr id='"+book.id+"'>";
+                        str += "<td>"+book.type+"</td>";
+                        str += "<td>"+book.name+"</td>";
+                        str += "<td>"+book.description+"</td>";
+                        str += "<td style='text-align: center;'>";
+                        str += "<button type='button' class='modify btn btn-primary' value='"+book.id+"'>修改</button> ";
+                        str += "<button type='button' class='delete btn btn-danger' bookname='"+book.name+"' value='"+book.id+"'>刪除</button>";
+                        str += "</td>";
+                        str += "</tr>";
+                        $("#list tbody").append(str);
+                    })
+                }
+            });
+        }
+
+        //console.log($(":button.modify"));
+        $(":button.modify").click(function () {
+            let id = $(this).val();
+            window.location.replace("/pages/modify.html?id="+id);
+        });
+
+        $(":button.delete").click(function () {
+            let id = $(this).val();
+            if(confirm("確定刪除書本["+$(this).attr("bookname")+"]的資料嗎？")){
+                $.ajax({
+                    url: '/book/'+id,
+                    type: 'DELETE',
+                    success: function(result) {
+                        $(document.getElementById(id)).remove();
+                        alert("刪除成功!");
+                    }
+                });
+            }
+        });
+        $("#search").click(function () {
+            window.location.replace("/pages/index.html?name="+$("#searchName").val());
+        })
+    })
+</script>
+<div class="container-fluid">
+    <h3>poop圖書管理</h3>
+    <hr class="hrLine"/>
+    <div class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" id="searchName" placeholder="請輸入書名">
+        </div>
+        <button id="search" type="button" class="btn btn-primary mb-2">查詢</button>
+    </div>
+    </br>
+    <div class="form-inline">
+        <button type="button" id="create" class="btn btn-primary mb-2">新增</button>
+    </div>
+    </br>
+    <table id="list" class="table table-bordered table-responsive table-striped">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">類型</th>
+            <th scope="col">書名</th>
+            <th scope="col">敘述</th>
+            <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

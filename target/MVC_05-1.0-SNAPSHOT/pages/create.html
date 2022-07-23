@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+<script>
+    $(function () {
+        $("#create").click(function () {
+            let book= {};
+            book.type=$("#type").val();
+            book.name=$("#name").val();
+            book.description=$("#description").val();
+            $.ajax({
+                url: '/book/',
+                type: 'POST',
+                data:JSON.stringify(book),
+                contentType : 'application/json;charset=UTF-8',
+                success: function(item) {
+                    alert("新增成功，3秒後跳轉回首頁。");
+                    setTimeout(function () {
+                        window.location.replace("/pages/index.html?");
+                    },3000);
+                }
+            });
+        })
+    })
+
+</script>
+<div class="container-fluid">
+    <h3>新增書籍</h3>
+    <hr class="hrLine"/>
+    <div id="id" style="display: none;"></div>
+    <div class="form-group">
+        <label for="type">類型</label>
+        <input type="text" class="form-control" id="type" placeholder="請輸入類型">
+    </div>
+    </br>
+    <div class="form-group">
+        <label for="name">書名</label>
+        <input type="text" class="form-control" id="name" placeholder="書名">
+    </div>
+    </br>
+    <div class="form-group">
+        <label for="description">敘述</label>
+        <input type="text" class="form-control" id="description" placeholder="敘述">
+    </div>
+    </br>
+    <button id="create" type="button" class="btn btn-primary mb-2">送出</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+hr{
+    border-top: 3px solid #3c763d;
+}
+h3{
+    font-weight: bold;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td,
+.table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #eff7f0;
+}
+td{
+    vertical-align: middle !important;
+}
